@@ -1,0 +1,58 @@
+{
+  "WisdomTree Tech": {
+    "portion": 40,
+    "composition": {
+      "WisdomTree Blockchain": 27,
+      "VanEck Semiconductor": 21,
+      "WisdomTree New Economy Real Estate": 16,
+      "WisdomTree Artificial Intelligence": 9,
+      "WisdomTree Biorevolution": 9,
+      "WisdomTree Cloud Computing": 9,
+      "WisdomTree Cybersecurity": 9
+    }
+  },
+  "Individual Stocks": {
+    "portion": 30,
+    "composition": {
+      "GOOGL": 2,
+      "AMZN": 2,
+      "RNA": 2,
+      "MSTR": 1.5,
+      "RNO": 1.5,
+      "ARQT": 1,
+      "ARGX": 1,
+      "ARQQ": 1,
+      "AEYE": 1,
+      "BKNG": 1,
+      "CAN": 1,
+      "CAN+": 1,
+      "CLSK": 1,
+      "FPAY": 1,
+      "META": 1,
+      "MSFT": 1,
+      "NLFX": 1,
+      "NVDA": 1,
+      "RIOT": 1,
+      "SOUN": 1,
+      "SPOT": 1,
+      "V": 1,
+      "BABA": 0.5,
+      "AS": 0.5,
+      "ARQ": 0.5,
+      "CHWY": 0.5,
+      "DUOL": 0.5,
+      "NIKE": 0.5,
+      "PDD": 0.5,
+      "WWW": 0.5
+    }
+  },
+  "S&P 500": {
+    "portion": 15
+  },
+  "FTSE 100": {
+    "portion": 10
+  },
+  "NASDAQ": {
+    "portion": 5
+  }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>January 2025 Equities, ETFs and Indices Investment Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      canvas {
+        max-width: 500px;
+        width: 100%;
+        height: auto;
+        margin: 20px auto;
+      }
+      button {
+        margin: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 0px none transparent;
+        background-color: #56b553;
+        color: white;
+      }
+      button:hover {
+        background-color: #429240;
+        transition: 0.3s;
+      }
+      #readme {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      md {
+        text-align: left;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>January 2025 Equities, ETFs and Indices Investment Portfolio</h1>
+    <button id="resetButton">Reset Chart</button>
+    <canvas id="myChart"></canvas>
+    <div id="readme" style="display: none">Loading README...</div>
+    <div
+      id="readme-tabs-content"
+      class="hidden"
+      style="
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        margin-top: 20px;
+      "
+    >
+      <md># Breakdown of Assets </md>
+      <md>## Big Tech </md>
+      <md>
+        40% of the portfolio is allocated to investments in Blockchain, Web3,
+        and Information Systems technologies. With the increasing demand for
+        computational power driven by advancements in AI, both software and
+        hardware markets are projected to experience significant growth in 2025.
+        This allocation strategically positions the portfolio to capitalize on
+        this anticipated expansion.
+      </md>
+
+      <md>## ETFs </md>
+      <md>
+        A larger portion of the portfolio (10%) has been allocated to the FTSE
+        100, reflecting an expectation of the Dollar strengthening against the
+        Pound in the coming year, potentially spurred by market shifts following
+        geopolitical changes, such as Trump's inauguration. This represents an
+        arbitrage opportunity for US-based investors. Additionally, 5% of the
+        portfolio is allocated to the NASDAQ as a supplementary investment in
+        technology-focused securities, providing added resilience within the
+        tech sector. A further 15% is allocated to the S&P 500, aiming to
+        enhance the overall portfolio's stability and performance through
+        exposure to a broad and diversified range of US equities.
+      </md>
+
+      <md>## Individual Stocks </md>
+      <md>
+        The portfolio's stock allocation employs a balanced approach to risk and
+        market trends. Approximately 15% of the selected stocks align with
+        general market trends, offering stable and predictable growth potential.
+        Conversely, the remaining 15% comprises contrarian picks, chosen for
+        their potential to outperform the market by leveraging opportunities
+        overlooked by broader market participants. These contrarian stocks have
+        been meticulously selected using advanced analysis on the Bloomberg
+        Terminal, supported by insights from recent news, expert
+        recommendations, and market signals sourced through various specialized
+        functions.
+      </md>
+      <md>**_Please note:_** </md>
+      <md>
+        The above investment allocations are based on 12-month market
+        predictions derived from comprehensive analyses and data collected
+        within the last 30 days.
+      </md>
+    </div>
+    <script>
+      fetch("pie.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to load JSON file.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          createChart(data);
+        })
+        .catch((error) => {
+          console.error("Error loading JSON:", error);
+        });
+
+      function createChart(data) {
+        let currentData = data;
+        let chartInstance;
+
+        const ctx = document.getElementById("myChart").getContext("2d");
+
+        function updateChart(labels, values, colors) {
+          if (chartInstance) {
+            chartInstance.destroy();
+          }
+
+          chartInstance = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: values,
+                  backgroundColor: colors,
+                  hoverOffset: 10,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      const label = context.label || "";
+                      const value = context.raw || 0;
+                      return `${label}: ${value}%`;
+                    },
+                  },
+                },
+              },
+              onClick: (event, elements) => {
+                if (elements.length > 0) {
+                  const index = elements[0].index;
+                  const clickedLabel = labels[index];
+
+                  if (
+                    currentData[clickedLabel] &&
+                    currentData[clickedLabel].composition
+                  ) {
+                    const composition = currentData[clickedLabel].composition;
+                    currentData = composition;
+
+                    const childLabels = Object.keys(composition);
+                    const childValues = Object.values(composition);
+                    const childColors = generateColors(childLabels.length);
+
+                    updateChart(childLabels, childValues, childColors);
+                  }
+                }
+              },
+            },
+          });
+        }
+
+        function generateColors(count) {
+          const colors = [];
+          for (let i = 0; i < count; i++) {
+            colors.push(`hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`);
+          }
+          return colors;
+        }
+
+        const topLabels = Object.keys(data);
+        const topValues = topLabels.map((key) => data[key].portion);
+        const topColors = generateColors(topLabels.length);
+
+        updateChart(topLabels, topValues, topColors);
+
+        document.getElementById("resetButton").addEventListener("click", () => {
+          currentData = data;
+          updateChart(topLabels, topValues, topColors);
+        });
+      }
+    </script>
+  </body>
+</html>
